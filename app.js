@@ -1,3 +1,4 @@
+//-------------------------------------------------------------------------------
 //DATA MODULE
 const dataController = (function() {
 
@@ -6,7 +7,7 @@ const dataController = (function() {
     }
 })();
 
-
+//-------------------------------------------------------------------------------
 //UI MODULE
 const UIController = (function() {
 
@@ -15,11 +16,11 @@ const UIController = (function() {
     }
 })();
 
-
+//-------------------------------------------------------------------------------
 //EVENTS MODULE
 const EController = (function() {
 
     return {
 
     }
-})();
+})(dataController, UIController);
