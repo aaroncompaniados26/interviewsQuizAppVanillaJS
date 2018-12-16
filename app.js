@@ -15,32 +15,27 @@ const dataController = (function() {
         //DB Checker
         readyDB: function() { //key: questions
             let dBase;
-            if (localStorage.getItem('questions') === null) {
+            if (localStorage.getItem('questions') === null) {//empty
                 dBase = []; //prepare to stock
             } else {
-                dBase = JSON.parse(localStorage.getItem('questions')); //original data  
+                dBase = JSON.parse(localStorage.getItem('questions'));
             }
             return dBase;
         },
         //Storage processor
         setCollection: function(data) {
-            let dBase;
-            dBase = this.readyDB(); //str for DB
-            localStorage.setItem('questions', JSON.stringify(data));
-        },
-        remover: function(){
-            localStorage.removeItem('questions');
+                let dBase = this.readyDB(); //check
+                //stock
+                dBase.push(data); //storage them in array...
+                localStorage.setItem('questions', JSON.stringify(dBase));//..as strings
         }
-
     }
-
     return {
         dbS: function(typedQ, answers) {
 
             // FORMAT & Data verification
             const stockA = []; //to storage
             let rigOne, qId;
-            qId = 0;
             let nods = Array.from(answers); //nodeL to arr
             nods.forEach((current) => { //if values, stored them
                 if (current.value !== '') {
@@ -51,14 +46,17 @@ const dataController = (function() {
                     }
                 }
             })
-            console.log(rigOne);
-
+            if(DB.readyDB().length > 0){
+                qId = DB.readyDB()[DB.readyDB().length - 1].id + 1;
+            } else {
+                qId = 0;
+            }
             // INSTANCE to storage formatted date
             typedQ = new Input(qId, typedQ.value, stockA, rigOne);
             console.log(typedQ);
 
             // SAVE instance on DB
-            DB.setCollection(typedQ)
+            DB.setCollection(typedQ, qId);
         }
 
     }
