@@ -12,7 +12,8 @@ const dataController = (function() {
         }
     }
     return {
-        dataBase: function(question, answers){
+        dbS: function(question, answers) {
+            const stockA = [];
             
         }
 
@@ -25,7 +26,10 @@ const dataController = (function() {
 
 const UIController = (function() {
     const DOM = {
-        insert: document.getElementById('question-insert-btn')
+        // input
+        insert: document.getElementById('question-insert-btn'),
+        nueQ: document.getElementById('new-question-text'),
+        options: document.querySelectorAll('.admin-option')
     }
     return {
         getDom: DOM
@@ -34,14 +38,28 @@ const UIController = (function() {
 })();
 
 
+
 //-------------------------------------------------------------------------------
 //EVENTS MODULE
 
 const EController = (function(da, ui) {
     // Input click Event
-    const input = ui.getDom.insert;
-    input.addEventListener('click', function() {
-        console.log('wroks');
+    const input = ui.getDom;
+    input.insert.addEventListener('click', function() {
+        // get input from data Module
+        console.log(input);
+        dataController.dbS(input.nueQ, input.options);
     });
 
 })(dataController, UIController);
+
+
+
+
+
+
+
+
+
+
+
