@@ -57,6 +57,9 @@ const dataController = (function() {
 
             // SAVE instance on DB
             DB.setCollection(typedQ, qId);
+
+            //CLEAR fields
+
         }
 
     }
@@ -74,7 +77,14 @@ const UIController = (function() {
         options: document.querySelectorAll('.admin-option')
     }
     return {
-        getDom: DOM
+        getDom: DOM,
+        showError: function(message){
+            const di = document.createElement('div');
+            di.className = 'error';
+            di.textContent = message;
+            //location
+            
+        }
 
     }
 })();
@@ -88,9 +98,20 @@ const EController = (function(da, ui) {
     // Input click Event
     const input = ui.getDom;
     input.insert.addEventListener('click', function() {
-        // get input from data Module
+        let stock = Array.from(input.options);
+        if(input.nueQ.value.length > 0){
+        // get input from data Module and save it into DB
         console.log(input);
         dataController.dbS(input.nueQ, input.options);
+        // Clear input fields
+        input.nueQ.value = '';
+        input.options.forEach(current => { 
+            current.value = '';
+            current.previousElementSibling.checked = false;
+            });
+        } else{
+            ui.showError('Please complete the fields');
+        }
     });
 
 })(dataController, UIController);
