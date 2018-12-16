@@ -8,13 +8,29 @@ const dataController = (function() {
             this.id = id;
             this.question = question;
             this.answers = answers;
-            this.rightAns = rightOne;
+            this.rightOne = rightOne;
         }
     }
     return {
-        dbS: function(question, answers) {
-            const stockA = [];
-            
+        dbS: function(typedQ, answers) {
+            // FORMAT/ COMPROBATIONS 
+            const stockA = []; //to storage
+            let rigOne, qId;
+            qId = 0;
+            let nods = Array.from(answers); //nodeL to arr
+            nods.forEach((current) => { //if values, stored them
+                if (current.value !== '') {
+                    stockA.push(current.value)
+                    if (current.previousElementSibling.checked) {
+                        rigOne = current.value; //right answer/checked
+                        console.log(rigOne);
+                    }
+                }
+            })
+            console.log(rigOne);
+            // INSTANCE OF QUESTIONS FORMATTED
+            typedQ = new Input(qId, typedQ.value, stockA, rigOne);
+            console.log(typedQ);
         }
 
     }
@@ -52,14 +68,3 @@ const EController = (function(da, ui) {
     });
 
 })(dataController, UIController);
-
-
-
-
-
-
-
-
-
-
-
