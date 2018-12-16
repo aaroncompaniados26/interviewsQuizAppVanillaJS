@@ -11,9 +11,33 @@ const dataController = (function() {
             this.rightOne = rightOne;
         }
     }
+    const DB = {
+        //DB Checker
+        readyDB: function() { //key: questions
+            let dBase;
+            if (localStorage.getItem('questions') === null) {
+                dBase = []; //prepare to stock
+            } else {
+                dBase = JSON.parse(localStorage.getItem('questions')); //original data  
+            }
+            return dBase;
+        },
+        //Storage processor
+        setCollection: function(data) {
+            let dBase;
+            dBase = this.readyDB(); //str for DB
+            localStorage.setItem('questions', JSON.stringify(data));
+        },
+        remover: function(){
+            localStorage.removeItem('questions');
+        }
+
+    }
+
     return {
         dbS: function(typedQ, answers) {
-            // FORMAT/ COMPROBATIONS 
+
+            // FORMAT & Data verification
             const stockA = []; //to storage
             let rigOne, qId;
             qId = 0;
@@ -28,9 +52,13 @@ const dataController = (function() {
                 }
             })
             console.log(rigOne);
-            // INSTANCE OF QUESTIONS FORMATTED
+
+            // INSTANCE to storage formatted date
             typedQ = new Input(qId, typedQ.value, stockA, rigOne);
             console.log(typedQ);
+
+            // SAVE instance on DB
+            DB.setCollection(typedQ)
         }
 
     }
