@@ -42,12 +42,12 @@ const dataController = (function() {
                     stockA.push(current.value)
                     if (current.previousElementSibling.checked) {
                         rigOne = current.value; //right answer/checked
-                        console.log(rigOne);
+                        console.log(rigOne); //right one Check point
                     }
                 }
             })
             if(DB.readyDB().length > 0){
-                qId = DB.readyDB()[DB.readyDB().length - 1].id + 1;
+                qId = DB.readyDB()[DB.readyDB().length - 1].id + 1; //assign Id
             } else {
                 qId = 0;
             }
