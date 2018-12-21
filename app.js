@@ -121,19 +121,21 @@ const EController = (function(da, ui) {
     // Input click Event ADD
     input.insert.addEventListener('click', function() {
         let stock = Array.from(input.options);
+        //re-select added options so that they are taken into account for localStorage and clearfileds
+        const addedNewAnswers = document.querySelectorAll('.admin-option'); 
         if (input.nueQ.value.length > 0) {
             // get input from data Module and save it into DB
             console.log(input);
-            dataController.dbS(input.nueQ, input.options);
+            dataController.dbS(input.nueQ, addedNewAnswers);
             // Clear input fields
             input.nueQ.value = '';
-            input.options.forEach(current => {
+            addedNewAnswers.forEach(current => {
                 current.value = '';
                 current.previousElementSibling.checked = false;
             });
         } else {
             ui.showError('Please complete the fields');
         }
-    });
-
+        
+    }); //ADD event ends here
 })(dataController, UIController);
