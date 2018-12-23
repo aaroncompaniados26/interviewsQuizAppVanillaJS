@@ -103,14 +103,21 @@ const UIController = (function() {
             })
         },
 // 3. DISPLAY DATABASE
-        displayLS: function(questionAdded){
+        displayLS: function(){
+            let stock, stockII;
             console.log('i ran');
             // SIMPLE WAY
             // let n = document.querySelectorAll('.admin-option').length;
             // const htmlII = `<p><span>${questionAdded}</span><button id="question-${n}">Edit</button></p>`;
             // DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
             // BEST WAY
-            
+            stock = JSON.parse(localStorage.getItem('questions'));
+            stock.reverse();    //stock styles applied on display
+            stock.forEach((current) =>{
+                // html creation
+                const htmlII = `<p>${current.id}. <span>${current.question}</span><button id="question-${current.id}">Edit</button></p>`;
+                DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
+            })
         },
 
         showError: function(message) {
@@ -134,6 +141,7 @@ const EController = (function(da, ui) {
     const input = ui.getDom;
     // Inputs ADDED dinamically as user focus on 
     ui.dinamicAddInput();
+    ui.displayLS(); //DISPLAY DB
     // Input click Event ADD
     input.insert.addEventListener('click', function() {
         let stock = Array.from(input.options);
