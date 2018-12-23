@@ -45,7 +45,7 @@ const dataController = (function() {
                         console.log(rigOne); //right one Check point
                     }
                 }
-            })
+            }) //ASSIGNING proper Id to every storaged element
             if (DB.readyDB().length > 0) {
                 qId = DB.readyDB()[DB.readyDB().length - 1].id + 1; //assign Id
             } else {
@@ -57,8 +57,6 @@ const dataController = (function() {
 
             // SAVE instance on DB
             DB.setCollection(typedQ, qId);
-
-            //CLEAR fields
 
         }
 
