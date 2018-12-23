@@ -34,6 +34,10 @@ const dataController = (function() {
     }
     return {
 // PUBLIC
+// DBase Status Check
+        getCheck: function(){
+            return DB.readyDB();
+        },
 // 1. FORMAT & DATA PROCESSOR --> TO DB
         dbS: function(typedQ, answers) {
             // FORMAT
@@ -69,7 +73,7 @@ const dataController = (function() {
 //-------------------------------------------------------------------------------
 //UI MODULE
 
-const UIController = (function() {
+const UIController = (function(DBase) {
 // PRIVATE
     // DOM-WORKFORCE
     const DOM = {
@@ -85,11 +89,11 @@ const UIController = (function() {
 // 1.
         getDom: DOM,
 // 2. + INPUT OPTION ON SELECTION
-        dinamicAddInput: function() {
+        dynamicAddInput: function() {
                             //2nd son        2nd son
             DOM.adminInput.lastElementChild.lastElementChild.addEventListener('focus', function add(){
                 let n = document.querySelectorAll('.admin-option').length;
-                // htmtl creation
+                // html creation
                 const html=`<div class="admin-option-wrapper">
                             <input type="radio" class="admin-option-${n}" name="answer" value="-${n}">
                             <input type="text" class="admin-option admin-option-${n}" value ="">
@@ -105,31 +109,41 @@ const UIController = (function() {
 // 3. DISPLAY DATABASE
         displayLS: function(){
             let stock, stockII;
-            console.log('i ran');
-            // SIMPLE WAY
-            // let n = document.querySelectorAll('.admin-option').length;
-            // const htmlII = `<p><span>${questionAdded}</span><button id="question-${n}">Edit</button></p>`;
-            // DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
-            // BEST WAY
-            stock = JSON.parse(localStorage.getItem('questions'));
-            stock.reverse();    //stock styles applied on display
-            stock.forEach((current) =>{
-                // html creation
-                const htmlII = `<p>${current.id}. <span>${current.question}</span><button id="question-${current.id}">Edit</button></p>`;
-                DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
+    // STOCK STATUS
+            stock = DBase.getCheck; //DataBase status function
+            stockII = stock(); //invoke 113
+
+            if(stockII.length > 0){
+                stockII.forEach((current) => {
+                    // html creation
+                    const htmlII = `<p>${current.id}. <span>${current.question}</span><button class="selected" 
+                                    id="${current.id}">Edit</button></p>`;
+                    DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
+                });
+            }
+        },
+// 4. EDIT OPTION
+        editQList: function(idButton , status){
+    // STOCK STATUS
+            let foundQuestion,position, check; //status on localStorage
+            check = status;
+            check.forEach((current, index) =>{
+                if(current.id === parseInt(idButton)){ //same id on DB, EDIT
+                    console.log('found');
+                    foundQuestion = current; //storage question to be edited
+                    position = index; //back on same place after EDIT
+                    console.log(foundQuestion, position);
+                }
             })
         },
-
         showError: function(message) {
             const di = document.createElement('div');
             di.className = 'error';
             di.textContent = message;
             //location
-
         }
-
     }
-})();
+})(dataController);
 
 
 
@@ -138,11 +152,11 @@ const UIController = (function() {
 
 const EController = (function(da, ui) {
 // PRIVATE
-//DOM
-    const input = ui.getDom;
-//1. ANSWERS OPTIONS dinamically ADDED  on FOCUS
-    ui.dinamicAddInput();
-//2. DISPLAY DATA-BASE
+    const input = ui.getDom; //DOM
+    let stock, stockII;
+//1. ANSWERS OPTIONS dynamically ADDED  on FOCUS
+    ui.dynamicAddInput();
+//2. DISPLAY DATA in dBASE
     ui.displayLS(); 
 //3. Input ADDER
     input.insert.addEventListener('click', function() {
@@ -159,8 +173,18 @@ const EController = (function(da, ui) {
                 current.value = '';
                 current.previousElementSibling.checked = false;
             });
+            ui.displayLS();//after new question
         } else {
             ui.showError('Please complete the fields');
         }
-    }); //ADD event ends here
+    }); // 147
+// 4. EDIT answers/questions
+    input.nueQList.addEventListener('click', function(e){
+        let chosenId;
+        if(e.target.className === 'selected'){//clicked 'edit' button 
+            chosenId = e.target.id; //grab id
+            ui.editQList(chosenId, da.getCheck());
+        };
+    })
+
 })(dataController, UIController);
