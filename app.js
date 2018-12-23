@@ -2,7 +2,8 @@
 //DATA MODULE
 
 const dataController = (function() {
-    // class Input (questions)
+// PRIVATE
+// 1. QUESTIONS CLASS
     class Input {
         constructor(id, question, answers, rightOne) {
             this.id = id;
@@ -11,6 +12,7 @@ const dataController = (function() {
             this.rightOne = rightOne;
         }
     }
+// 2. DATABASE FOR QUESTIONS
     const DB = {
         //DB Checker
         readyDB: function() { //key: questions
@@ -22,7 +24,7 @@ const dataController = (function() {
             }
             return dBase;
         },
-        //Storage processor
+        // 2.2 SECURITY CHECK FOR DB
         setCollection: function(data) {
             let dBase = this.readyDB(); //check
             //stock
@@ -31,12 +33,13 @@ const dataController = (function() {
         }
     }
     return {
+// PUBLIC
+// 1. FORMAT & DATA PROCESSOR --> TO DB
         dbS: function(typedQ, answers) {
-
-            // FORMAT & Data verification
+            // FORMAT
             const stockA = []; //to storage
             let rigOne, qId;
-            let nods = Array.from(answers); //nodeL to arr
+            let nods = Array.from(answers); //Answers nodeL to arr
             nods.forEach((current) => { //if values, stored them
                 if (current.value !== '') {
                     stockA.push(current.value)
@@ -45,7 +48,7 @@ const dataController = (function() {
                         console.log(rigOne); //right one Check point
                     }
                 }
-            }) //ASSIGNING proper Id to every storaged element
+            }) //ASSIGNING proper Id to every element
             if (DB.readyDB().length > 0) {
                 qId = DB.readyDB()[DB.readyDB().length - 1].id + 1; //assign Id
             } else {
@@ -54,7 +57,6 @@ const dataController = (function() {
             // INSTANCE to storage formatted date
             typedQ = new Input(qId, typedQ.value, stockA, rigOne);
             console.log(typedQ);
-
             // SAVE instance on DB
             DB.setCollection(typedQ, qId);
 
@@ -68,15 +70,21 @@ const dataController = (function() {
 //UI MODULE
 
 const UIController = (function() {
+// PRIVATE
+    // DOM-WORKFORCE
     const DOM = {
         // input
         insert: document.getElementById('question-insert-btn'),
         nueQ: document.getElementById('new-question-text'),
         options: document.querySelectorAll('.admin-option'),
-        adminInput: document.querySelector('.admin-options-container')
+        adminInput: document.querySelector('.admin-options-container'),
+        nueQList: document.querySelector('.inserted-questions-wrapper')
     }
     return {
+// PUBLIC
+// 1.
         getDom: DOM,
+// 2. + INPUT OPTION ON SELECTION
         dinamicAddInput: function() {
                             //2nd son        2nd son
             DOM.adminInput.lastElementChild.lastElementChild.addEventListener('focus', function add(){
@@ -88,13 +96,20 @@ const UIController = (function() {
                             </div>`
                 // Inject
                 DOM.adminInput.insertAdjacentHTML('beforeend', html);
-                //MOVE listener to last element created
+                //REMOVE listener to last element
                 DOM.adminInput.lastElementChild.previousElementSibling.lastElementChild.removeEventListener('focus', add);
                 //PASS it to newly created
                 DOM.adminInput.lastElementChild.lastElementChild.addEventListener('focus', add)
 
             })
         },
+// 3. DISPLAY DATABASE
+        displayLS: function(questionAdded){
+            console.log('i ran');
+
+
+        },
+
         showError: function(message) {
             const di = document.createElement('div');
             di.className = 'error';
@@ -124,7 +139,8 @@ const EController = (function(da, ui) {
         if (input.nueQ.value.length > 0) {
             // get input from data Module and save it into DB
             console.log(input);
-            dataController.dbS(input.nueQ, addedNewAnswers);
+            dataController.dbS(input.nueQ, addedNewAnswers); //123
+            ui.displayLS(input.nueQ.value);
             // Clear input fields
             input.nueQ.value = '';
             addedNewAnswers.forEach(current => {
