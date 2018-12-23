@@ -103,11 +103,14 @@ const UIController = (function() {
             })
         },
 // 3. DISPLAY DATABASE
-        displayLS: function(questionAdded , id){
+        displayLS: function(questionAdded){
             console.log('i ran');
-            const htmlII = `<p><span>${questionAdded}</span><button id="question-1">Edit</button></p>`;
-            DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
-
+            // SIMPLE WAY
+            // let n = document.querySelectorAll('.admin-option').length;
+            // const htmlII = `<p><span>${questionAdded}</span><button id="question-${n}">Edit</button></p>`;
+            // DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
+            // BEST WAY
+            
         },
 
         showError: function(message) {
@@ -140,7 +143,7 @@ const EController = (function(da, ui) {
             // get input from data Module and save it into DB
             console.log(input);
             dataController.dbS(input.nueQ, addedNewAnswers); //123
-            ui.displayLS(input.nueQ.value);
+            // ui.displayLS(input.nueQ.value);      //SIMPLE WAY
             // Clear input fields
             input.nueQ.value = '';
             addedNewAnswers.forEach(current => {
