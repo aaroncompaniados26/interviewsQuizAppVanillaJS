@@ -93,20 +93,20 @@ const UIController = (function() {
                 const html=`<div class="admin-option-wrapper">
                             <input type="radio" class="admin-option-${n}" name="answer" value="-${n}">
                             <input type="text" class="admin-option admin-option-${n}" value ="">
-                            </div>`
+                            </div>` ;
                 // Inject
                 DOM.adminInput.insertAdjacentHTML('beforeend', html);
                 //REMOVE listener to last element
                 DOM.adminInput.lastElementChild.previousElementSibling.lastElementChild.removeEventListener('focus', add);
                 //PASS it to newly created
-                DOM.adminInput.lastElementChild.lastElementChild.addEventListener('focus', add)
-
+                DOM.adminInput.lastElementChild.lastElementChild.addEventListener('focus', add);
             })
         },
 // 3. DISPLAY DATABASE
-        displayLS: function(questionAdded){
+        displayLS: function(questionAdded , id){
             console.log('i ran');
-
+            const htmlII = `<p><span>${questionAdded}</span><button id="question-1">Edit</button></p>`;
+            DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
 
         },
 
