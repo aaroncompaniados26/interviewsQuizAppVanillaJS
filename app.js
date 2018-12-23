@@ -134,25 +134,26 @@ const UIController = (function() {
 
 
 //-------------------------------------------------------------------------------
-//EVENTS MODULE
+//CONTROLLER MODULE
 
 const EController = (function(da, ui) {
-    //DOM
+// PRIVATE
+//DOM
     const input = ui.getDom;
-    // Inputs ADDED dinamically as user focus on 
+//1. ANSWERS OPTIONS dinamically ADDED  on FOCUS
     ui.dinamicAddInput();
-    ui.displayLS(); //DISPLAY DB
-    // Input click Event ADD
+//2. DISPLAY DATA-BASE
+    ui.displayLS(); 
+//3. Input ADDER
     input.insert.addEventListener('click', function() {
         let stock = Array.from(input.options);
-        //re-select added options so that they are taken into account for localStorage and clearfileds
+    //re-select added options so that they are taken into account for localStorage and clearfileds
         const addedNewAnswers = document.querySelectorAll('.admin-option'); 
-        if (input.nueQ.value.length > 0) {
-            // get input from data Module and save it into DB
+        if (input.nueQ.value.length > 0 && input.options[1].value.length > 0) {
+        // get input from data Module and save it into DB
             console.log(input);
             dataController.dbS(input.nueQ, addedNewAnswers); //123
-            // ui.displayLS(input.nueQ.value);      //SIMPLE WAY
-            // Clear input fields
+        // Clear input fields
             input.nueQ.value = '';
             addedNewAnswers.forEach(current => {
                 current.value = '';
@@ -161,6 +162,5 @@ const EController = (function(da, ui) {
         } else {
             ui.showError('Please complete the fields');
         }
-        
     }); //ADD event ends here
 })(dataController, UIController);
