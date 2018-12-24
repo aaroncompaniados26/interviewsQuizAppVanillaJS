@@ -79,8 +79,8 @@ const UIController = (function(DBase) {
     const DOM = {
         // input
         insert: document.getElementById('question-insert-btn'),
-        nueQ: document.getElementById('new-question-text'),
-        options: document.querySelectorAll('.admin-option'),
+        nueQ: document.getElementById('new-question-text'), //questions
+        options: document.querySelectorAll('.admin-option'), //answers
         adminInput: document.querySelector('.admin-options-container'),
         nueQList: document.querySelector('.inserted-questions-wrapper')
     }
@@ -123,7 +123,7 @@ const UIController = (function(DBase) {
             }
         },
 // 4. EDIT OPTION
-        editQList: function(idButton , status){
+        editQList: function(idButton , status, e){
     // STOCK STATUS
             let foundQuestion,position, check; //status on localStorage
             check = status;
@@ -133,6 +133,9 @@ const UIController = (function(DBase) {
                     foundQuestion = current; //storage question to be edited
                     position = index; //back on same place after EDIT
                     console.log(foundQuestion, position);
+                    DOM.nueQ.value = foundQuestion.question; //EDIT
+                    DOM.options.forEach((current, index) => current.value = foundQuestion.answers[index]);
+                    // DOM.adminInput.firstElementChild.firstElementChild
                 }
             })
         },
