@@ -123,7 +123,7 @@ const UIController = (function(DBase) {
             }
         },
 // 4. EDIT OPTION
-        editQList: function(idButton , status, e){
+        editQList: function(idButton , status){
     // STOCK STATUS
             let foundQuestion,position, check; //status on localStorage
             check = status;
@@ -135,9 +135,10 @@ const UIController = (function(DBase) {
                     console.log(foundQuestion, position);
                     DOM.nueQ.value = foundQuestion.question; //EDIT
                     DOM.adminInput.innerHTML = ''; //Clear fields for answers
-                    foundQuestion.answers.forEach((current) => {
-                         const htmlII = `<p>${current.id}. <span>${current.question}</span><button class="selected" 
-                                    id="${current.id}">Edit</button></p>`;
+                    
+                    // foundQuestion.answers.forEach((current) => {
+                    //      const htmlII = `<p>${current.id}. <span>${current.question}</span><button class="selected" 
+                    //                 id="${current.id}">Edit</button></p>`;
                     // DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
                     })
                     DOM.options.forEach((current, index) => current.value = foundQuestion.answers[index]);
