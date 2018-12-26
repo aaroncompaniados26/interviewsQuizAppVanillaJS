@@ -63,12 +63,9 @@ const dataController = (function() {
             console.log(typedQ);
             // SAVE instance on DB
             DB.setCollection(typedQ, qId);
-
         }
-
     }
 })();
-
 
 //-------------------------------------------------------------------------------
 //UI MODULE
@@ -82,7 +79,9 @@ const UIController = (function(DBase) {
         nueQ: document.getElementById('new-question-text'), //questions
         options: document.querySelectorAll('.admin-option'), //answers
         adminInput: document.querySelector('.admin-options-container'),
-        nueQList: document.querySelector('.inserted-questions-wrapper')
+        nueQList: document.querySelector('.inserted-questions-wrapper'),
+        updateBtn: document.querySelector('#question-update-btn'),
+        deleteBtn: document.querySelector('#question-delete-btn')
     }
     return {
 // PUBLIC
@@ -123,7 +122,7 @@ const UIController = (function(DBase) {
             }
         },
 // 4. EDIT OPTION
-        editQList: function(idButton , status){
+        editQList: function(idButton , status, dynamicAdd){
     // STOCK STATUS
             let foundQuestion,position, check; //status on localStorage
             check = status;
@@ -135,13 +134,18 @@ const UIController = (function(DBase) {
                     console.log(foundQuestion, position);
                     DOM.nueQ.value = foundQuestion.question; //EDIT
                     DOM.adminInput.innerHTML = ''; //Clear fields for answers
-                    current.answers.forEach((answer) =>{
+                    current.answers.forEach((answer , index) =>{
                         let htmlR = `<div class="admin-option-wrapper">
-                        <input type="radio" class="admin-option-0" name="answer" value="${current.rightOne}"> 
-                        <input type="text" class="admin-option admin-option-0" value="${answer}">
-                        </div>`
+                        <input type="radio" class="admin-option-${index}" name="answer" value="${current.rightOne}"> 
+                        <input type="text" class="admin-option admin-option-${index}" value="${answer}"></div>`;
                         // Inject
                         DOM.adminInput.insertAdjacentHTML('beforeend', htmlR);
+                        // NAV for EDIT option
+                        DOM.deleteBtn.style.visibility = 'visible';
+                        DOM.updateBtn.style.visibility = 'visible';
+                        DOM.insert.style.visibility = 'hidden';
+                        // dynamic add on focus
+                        dynamicAdd();
                     })                        
                 }
             })
@@ -188,7 +192,7 @@ const EController = (function(da, ui) {
         let chosenId;
         if(e.target.className === 'selected'){//clicked 'edit' button 
             chosenId = e.target.id; //grab id
-            ui.editQList(chosenId, da.getCheck());
+            ui.editQList(chosenId, da.getCheck(), ui.dynamicAddInput); //3rd dynamic method
         };
     })
 
