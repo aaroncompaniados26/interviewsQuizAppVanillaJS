@@ -142,13 +142,11 @@ const UIController = (function(DBase) {
                         </div>`
                         // Inject
                         DOM.adminInput.insertAdjacentHTML('beforeend', htmlR);
-                    })
-                        
-
+                    })                        
                 }
             })
         }
-    }
+    } //R87
 })(dataController);
 
 
@@ -181,7 +179,8 @@ const EController = (function(da, ui) {
             });
             ui.displayLS();//after new question
         } else {
-            ui.showError('Please complete the fields');
+            // ui.showError('Please complete the fields');
+            console.log('wrong input , error');
         }
     }); // 147
 // 4. EDIT answers/questions
