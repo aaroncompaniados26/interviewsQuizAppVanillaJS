@@ -135,22 +135,18 @@ const UIController = (function(DBase) {
                     console.log(foundQuestion, position);
                     DOM.nueQ.value = foundQuestion.question; //EDIT
                     DOM.adminInput.innerHTML = ''; //Clear fields for answers
-                    
-                    // foundQuestion.answers.forEach((current) => {
-                    //      const htmlII = `<p>${current.id}. <span>${current.question}</span><button class="selected" 
-                    //                 id="${current.id}">Edit</button></p>`;
-                    // DOM.nueQList.insertAdjacentHTML('afterbegin', htmlII);
+                    current.answers.forEach((answer) =>{
+                        let htmlR = `<div class="admin-option-wrapper">
+                        <input type="radio" class="admin-option-0" name="answer" value="${current.rightOne}"> 
+                        <input type="text" class="admin-option admin-option-0" value="${answer}">
+                        </div>`
+                        // Inject
+                        DOM.adminInput.insertAdjacentHTML('beforeend', htmlR);
                     })
-                    DOM.options.forEach((current, index) => current.value = foundQuestion.answers[index]);
-                    // DOM.adminInput.firstElementChild.firstElementChild
+                        
+
                 }
             })
-        },
-        showError: function(message) {
-            const di = document.createElement('div');
-            di.className = 'error';
-            di.textContent = message;
-            //location
         }
     }
 })(dataController);
