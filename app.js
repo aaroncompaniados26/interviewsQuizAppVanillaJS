@@ -14,7 +14,7 @@ const dataController = (function() {
     }
     // 2. DATABASE FOR QUESTIONS
     const DB = {
-        //DB Checker
+        // 2.1 DB Checker
         readyDB: function() { //key: questions
             let dBase;
             if (localStorage.getItem('questions') === null) { //empty
@@ -30,15 +30,26 @@ const dataController = (function() {
             //stock
             dBase.push(data); //storage them in array...
             localStorage.setItem('questions', JSON.stringify(dBase)); //..as strings
+        },
+        // 2.3 Replacement into Stock
+        setIndexCollection: function(index, num, data) {
+            let dBase = JSON.parse(localStorage.getItem('questions'));
+            //stock
+            dBase.splice(index, num, data); //storage them in array...
+            console.log(dBase);
+            localStorage.setItem('questions', JSON.stringify(dBase));
         }
     }
     return {
         // PUBLIC
-// 1. DBASE STATUS CHECK
+        // 1. DBASE STATUS CHECK
         getCheck: function() {
             return DB.readyDB();
         },
-// 2. FORMAT & DATA PROCESSOR --> TO DB
+        getIndexReplacer: function(a, b , c) {
+            return DB.setIndexCollection(a, b , c);
+        },
+        // 2. FORMAT & DATA PROCESSOR --> TO DB
         dbS: function(typedQ, answers) {
             // FORMAT
             const stockA = []; //to storage
@@ -130,7 +141,7 @@ const UIController = (function(DBase) {
             check = status;
             check.forEach((current, index) => {
                 if (current.id === parseInt(idButton)) { //same id on DB, EDIT
-                    console.log('found');
+                    console.log('I');
                     foundQuestion = current; //storage question to be edited
                     position = index; //back on same place after EDIT
                     console.log(foundQuestion, position);
@@ -157,23 +168,25 @@ const UIController = (function(DBase) {
         // 5. UPDATE QUESTIONS
         updateQuestions: function() {
             const nueOpts = [];
-            let optsAnswer = DOM.options;
+            let optsAnswer = document.getElementsByClassName("admin-option");
             //Re-assigning *
             questions.question = DOM.nueQ.value; //* new Qvalue
             for (let i = 0; i < optsAnswer.length; i++) {
                 if (optsAnswer[i].value != '') {
-                    nueOpts.push(optsAnswer[i].value);  // * new Answers
+                    nueOpts.push(optsAnswer[i].value); // * new Answers
                     if (optsAnswer[i].previousElementSibling.checked) {
-                        questions.rightOne = optsAnswer[i].value;  // * rightOne
+                        questions.rightOne = optsAnswer[i].value; // * rightOne
                     }
                 }
             }
             questions.answers = nueOpts; //*
-            // Positioning within DB
-            let nueStorage = DBase.getCheck;
-            nueStorage.splice()
-            console.log(questions);
-
+            if(questions.question !== '' && optsAnswer.length > 1 && questions.rightOne){
+                    // Positioning within DB
+                    let nueStockOrder = DBase.getIndexReplacer(questions.id, 1, questions);
+                    //Stock-Replacement
+                    console.log(questions);
+                    console.log(nueStockOrder);
+            }
         }
     } //R87
 })(dataController);
