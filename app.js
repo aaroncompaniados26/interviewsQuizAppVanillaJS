@@ -46,8 +46,8 @@ const dataController = (function() {
         getCheck: function() {
             return DB.readyDB();
         },
-        getIndexReplacer: function(a, b , c) {
-            return DB.setIndexCollection(a, b , c);
+        getIndexReplacer: function(a, b, c) {
+            return DB.setIndexCollection(a, b, c);
         },
         // 2. FORMAT & DATA PROCESSOR --> TO DB
         dbS: function(typedQ, answers) {
@@ -163,7 +163,7 @@ const UIController = (function(DBase) {
                     questions = foundQuestion;
                     //console.log(questions);
                 }
-            })
+            });
         },
         // 5. UPDATE QUESTIONS
         updateQuestions: function() {
@@ -180,12 +180,20 @@ const UIController = (function(DBase) {
                 }
             }
             questions.answers = nueOpts; //*
-            if(questions.question !== '' && optsAnswer.length > 1 && questions.rightOne){
-                    // Positioning within DB
-                    let nueStockOrder = DBase.getIndexReplacer(questions.id, 1, questions);
-                    //Stock-Replacement
-                    console.log(questions);
-                    console.log(nueStockOrder);
+            if (questions.question !== '' && optsAnswer.length > 1 && questions.rightOne) {
+                // Positioning within DB
+                let nueStockOrder = DBase.getIndexReplacer(questions.id, 1, questions);
+                //Stock-Replacement
+                console.log(questions);
+                console.log(nueStockOrder);
+                //UI
+                DOM.nueQ.value = '';
+                DOM.deleteBtn.style.visibility = 'hidden';
+                DOM.updateBtn.style.visibility = 'hidden';
+                DOM.insert.style.visibility = 'visible';
+                //for (let i = 0; i < DOM.nueQList.length; i++){
+                    
+                //}
             }
         }
     } //R87
