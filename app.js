@@ -34,11 +34,11 @@ const dataController = (function() {
     }
     return {
         // PUBLIC
-        // DBase Status Check
+// 1. DBASE STATUS CHECK
         getCheck: function() {
             return DB.readyDB();
         },
-        // 1. FORMAT & DATA PROCESSOR --> TO DB
+// 2. FORMAT & DATA PROCESSOR --> TO DB
         dbS: function(typedQ, answers) {
             // FORMAT
             const stockA = []; //to storage
@@ -155,11 +155,26 @@ const UIController = (function(DBase) {
             })
         },
         // 5. UPDATE QUESTIONS
-        updateQuestions: function(){
+        updateQuestions: function() {
+            const nueOpts = [];
+            let optsAnswer = DOM.options;
+            //Re-assigning *
+            questions.question = DOM.nueQ.value; //* new Qvalue
+            for (let i = 0; i < optsAnswer.length; i++) {
+                if (optsAnswer[i].value != '') {
+                    nueOpts.push(optsAnswer[i].value);  // * new Answers
+                    if (optsAnswer[i].previousElementSibling.checked) {
+                        questions.rightOne = optsAnswer[i].value;  // * rightOne
+                    }
+                }
+            }
+            questions.answers = nueOpts; //*
+            // Positioning within DB
+            let nueStorage = DBase.getCheck;
+            nueStorage.splice()
             console.log(questions);
+
         }
-
-
     } //R87
 })(dataController);
 
@@ -210,6 +225,6 @@ const EController = (function(da, ui) {
     // 5. UPDATE questions
     input.updateBtn.addEventListener('click', function(e) {
         console.log("update in process");
-        UIController.updateQuestions();    
-    }); 
+        UIController.updateQuestions();
+    });
 })(dataController, UIController);
