@@ -181,19 +181,20 @@ const UIController = (function(DBase) {
             }
             questions.answers = nueOpts; //*
             if (questions.question !== '' && optsAnswer.length > 1 && questions.rightOne) {
-                // Positioning within DB
+                //REPLACEMENT
                 let nueStockOrder = DBase.getIndexReplacer(questions.id, 1, questions);
-                //Stock-Replacement
-                console.log(questions);
-                console.log(nueStockOrder);
                 //UI
                 DOM.nueQ.value = '';
                 DOM.deleteBtn.style.visibility = 'hidden';
                 DOM.updateBtn.style.visibility = 'hidden';
                 DOM.insert.style.visibility = 'visible';
-                //for (let i = 0; i < DOM.nueQList.length; i++){
-                    
-                //}
+                const modify = Array.from(optsAnswer);
+                modify.forEach(function(current){
+                    current.value = ' ';
+                    if(current.previousElementSibling.checked){
+                        current.previousElementSibling.checked = false;
+                    }
+                });
             }
         }
     } //R87
