@@ -84,7 +84,7 @@ const dataController = (function() {
 
 const UIController = (function(DBase) {
     // PRIVATE
-    let questions;
+    let questions , positionsIndex;
     // DOM-WORKFORCE
     const DOM = {
         // input
@@ -96,11 +96,17 @@ const UIController = (function(DBase) {
         updateBtn: document.querySelector('#question-update-btn'),
         deleteBtn: document.querySelector('#question-delete-btn')
     }
+    uiCleaner = function(){
+        DOM.nueQ.value = '';
+        DOM.deleteBtn.style.visibility = 'hidden';
+        DOM.updateBtn.style.visibility = 'hidden';
+        DOM.insert.style.visibility = 'visible';
+    }
     return {
         // PUBLIC
-        // 1.
+// 1.
         getDom: DOM,
-        // 2. + INPUT OPTION ON SELECTION
+// 2. + INPUT OPTION ON SELECTION
         dynamicAddInput: function() {
             //2nd son        2nd son
             DOM.adminInput.lastElementChild.lastElementChild.addEventListener('focus', function add() {
@@ -118,7 +124,7 @@ const UIController = (function(DBase) {
                 DOM.adminInput.lastElementChild.lastElementChild.addEventListener('focus', add);
             })
         },
-        // 3. DISPLAY DATABASE
+// 3. DISPLAY DATABASE
         displayLS: function() {
             let stock, stockII;
             // STOCK STATUS
@@ -134,7 +140,7 @@ const UIController = (function(DBase) {
                 });
             }
         },
-        // 4. EDIT OPTION
+// 4. EDIT OPTION
         editQList: function(idButton, status, dynamicAdd) {
             // STOCK STATUS
             var foundQuestion, position, check; //status on localStorage
@@ -161,11 +167,11 @@ const UIController = (function(DBase) {
                         dynamicAdd();
                     });
                     questions = foundQuestion;
-                    //console.log(questions);
+                    positionsIndex = position;
                 }
             });
         },
-        // 5. UPDATE QUESTIONS
+// 5. UPDATE QUESTIONS
         updateQuestions: function() {
             const nueOpts = [];
             let optsAnswer = document.getElementsByClassName("admin-option");
@@ -182,12 +188,9 @@ const UIController = (function(DBase) {
             questions.answers = nueOpts; //*
             if (questions.question !== '' && optsAnswer.length > 1 && questions.rightOne) {
                 //REPLACEMENT
-                let nueStockOrder = DBase.getIndexReplacer(questions.id, 1, questions);
+                let nueStockOrder = DBase.getIndexReplacer(positionsIndex, 1, questions);
                 //UI
-                DOM.nueQ.value = '';
-                DOM.deleteBtn.style.visibility = 'hidden';
-                DOM.updateBtn.style.visibility = 'hidden';
-                DOM.insert.style.visibility = 'visible';
+                uiCleaner();
                 const modify = Array.from(optsAnswer);
                 modify.forEach(function(current){
                     current.value = ' ';
@@ -196,6 +199,12 @@ const UIController = (function(DBase) {
                     }
                 });
             }
+        },
+//6. DELETE Questions
+        deleteQuestions: function(){
+            let nueStockOrder = DBase.getIndexReplacer(positionsIndex, 1);
+            //DBase.getCheck();
+            uiCleaner();
         }
     } //R87
 })(dataController);
@@ -235,6 +244,7 @@ const EController = (function(da, ui) {
             console.log('wrong input , error');
         }
     }); // 147
+
     // 4. EDIT answers/questions
     input.nueQList.addEventListener('click', function(e) {
         let chosenId;
@@ -246,7 +256,12 @@ const EController = (function(da, ui) {
 
     // 5. UPDATE questions
     input.updateBtn.addEventListener('click', function(e) {
-        console.log("update in process");
         UIController.updateQuestions();
+    });
+
+    // 6. DELETE questions
+    input.deleteBtn.addEventListener('click', function(){
+        console.log('deleting');
+        UIController.deleteQuestions();
     });
 })(dataController, UIController);
